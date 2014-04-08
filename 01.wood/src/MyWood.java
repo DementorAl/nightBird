@@ -6,7 +6,7 @@ import java.util.HashMap;
  */
 public class MyWood implements Wood {
     ArrayList<String> dataAboutWood = new ArrayList<String>();
-    private HashMap<String, WoodCreate> woodmansCatalog = new HashMap<String, WoodCreate>();
+    protected HashMap<String, WoodCreate> woodmansCatalog = new HashMap<String, WoodCreate>();
 
     public MyWood(ArrayList<String> strings) {
         dataAboutWood = strings;
@@ -48,6 +48,11 @@ public class MyWood implements Wood {
             return woodmansCatalog.get(str);
         } else throw new Exception("такого персонажа нет");
     }
+
+    public int countOfWoodmans() {
+        return woodmansCatalog.size();
+    }
+
     @Override
     public Action move(String name, Direction direction) throws Exception {
         Point point = null;

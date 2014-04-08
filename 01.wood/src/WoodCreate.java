@@ -11,6 +11,7 @@ public class WoodCreate implements Woodman {
 
 
     public WoodCreate(String name, Point start) {
+
         this.nameOfWoodman = name;
         this.start = this.currentPosition = start;
         this.lifeCount = 3;

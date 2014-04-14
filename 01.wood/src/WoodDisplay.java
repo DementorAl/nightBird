@@ -1,6 +1,7 @@
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.io.PrintStream;
 import java.util.HashMap;
 
 /**
@@ -11,29 +12,29 @@ public class WoodDisplay extends MyWood {
     private OutputStream outputWriter;
     private MyWood thisWood;
 
-    public WoodDisplay(MyWood wood, OutputStream stream) throws IOException {
+    public WoodDisplay(MyWood wood, PrintStream stream) throws IOException {
         int weightOfWood;
         int heightOfWood;
         thisWood = wood;
         outputWriter = stream;
-        displaysChar.put("1111", '╬');                //по часовой стрелке, начиная слева
-        displaysChar.put("0011", '╗');
-        displaysChar.put("0100", '═');
+
+
+        displaysChar.put("1111", '╬');
+        displaysChar.put("0111", '╠');
+        displaysChar.put("1110", '╩');
+        displaysChar.put("0110", '╚');
+        displaysChar.put("1101", '╣');
         displaysChar.put("0101", '║');
         displaysChar.put("0100", '║');
         displaysChar.put("0001", '║');
-        displaysChar.put("0110", '╔');
-        displaysChar.put("1100", '╔');
-        displaysChar.put("0111", '╦');
-        //displaysChar.put("0011", '╝');
-        displaysChar.put("0011", '╔');
-        displaysChar.put("1010", '═');
-        displaysChar.put("0010", '═');
-        displaysChar.put("1000", '═');
-        displaysChar.put("1011", '╣');
+        displaysChar.put("1100", '╝');
+        displaysChar.put("1011", '╦');
         displaysChar.put("0110", '╚');
-        displaysChar.put("1101", '╩');
-        displaysChar.put("1110", '╠');
+        displaysChar.put("1010", '═');
+        displaysChar.put("1000", '═');
+        displaysChar.put("0010", '═');
+        displaysChar.put("0011", '╔');
+        displaysChar.put("1001", '╗');
         displaysChar.put("0000", '╬');
 
         weightOfWood = thisWood.dataAboutWood.get(1).length();
@@ -50,11 +51,30 @@ public class WoodDisplay extends MyWood {
     }
 
 
-    private void displaysCage(int i, int j, OutputStream outputWriter) throws IOException {
+    public void displaysCage(int i, int j, OutputStream outputWriter) throws IOException {
         OutputStreamWriter writerStream = new OutputStreamWriter(outputWriter);
-        if (thisWood.dataAboutWood.get(i).charAt(j) == '1' || thisWood.dataAboutWood.get(i).charAt(j) == '0') {
+//        for (WoodCreate thisWoodman : woodmansCatalog.values()) {
+//            Point thisWoodmanPosition = thisWoodman.currentPosition;
+//            if (i == thisWoodmanPosition.getX() && j == thisWoodmanPosition.getY()) {
+//                writerStream.write(thisWoodman.GetName().substring(0, 1));
+//            }
+//
+//        }
+
+        if (thisWood.dataAboutWood.get(i).charAt(j) == '0') {
+            for (WoodCreate thisWoodman : thisWood.woodmansCatalog.values()) {
+                Point thisWoodmanPosition = thisWoodman.currentPosition;
+                if (i == thisWoodmanPosition.getX() && j == thisWoodmanPosition.getY()) {
+                    writerStream.write(thisWoodman.GetName().substring(0, 1));
+                } else writerStream.write(' ');
+
+            }
+
+
+        }
+        if (thisWood.dataAboutWood.get(i).charAt(j) == '1') {
             String bound = boundRoundCage(i, j);
-            char[] check = new char[3];
+            char[] check;
             check = bound.toCharArray();
             bound = "";
             for (int u = 0; u < 4; u++) {
@@ -73,128 +93,21 @@ public class WoodDisplay extends MyWood {
         if (thisWood.dataAboutWood.get(i).charAt(j) == 'L') {
             writerStream.write('♥');
         }
-        for (WoodCreate thisWoodman : woodmansCatalog.values()) {
-            Point thisWoodmanPosition = thisWoodman.currentPosition;
-            if (i == thisWoodmanPosition.getX() && j == thisWoodmanPosition.getY()) {
-                writerStream.write(thisWoodman.GetName().substring(0, 1));
-            }
-
-        }
 
         writerStream.flush();
 
 
     }
 
-    private String boundRoundCage(int i, int j) {
-        if (i > 0 && j > 0 && i < thisWood.dataAboutWood.size() - 1 && j < thisWood.dataAboutWood.get(1).length() - 1) {
-            String string = String.valueOf(thisWood.dataAboutWood.get(i).charAt(j - 1)) + String.valueOf(thisWood.dataAboutWood.get(i - 1).charAt(j))
-                    + String.valueOf(thisWood.dataAboutWood.get(i).charAt(j + 1)) + String.valueOf(thisWood.dataAboutWood.get(i + 1).charAt(j));
-            return string;
-        }
-        if (i == 0 && j > 0 && j < thisWood.dataAboutWood.get(0).length() - 1) {
-            String string = String.valueOf(thisWood.dataAboutWood.get(i).charAt(j - 1)) + "0"
-                    + String.valueOf(thisWood.dataAboutWood.get(i).charAt(j + 1)) + String.valueOf(thisWood.dataAboutWood.get(i + 1).charAt(j));
-            return string;
-        }
-        if (i > 0 && j == 0 && i < thisWood.dataAboutWood.size() - 1) {
-            String string = "0" + String.valueOf(thisWood.dataAboutWood.get(i - 1).charAt(j))
-                    + String.valueOf(thisWood.dataAboutWood.get(i).charAt(j + 1)) + String.valueOf(thisWood.dataAboutWood.get(i + 1).charAt(j));
-            return string;
-        }
-        if (i == thisWood.dataAboutWood.size() && j != 0 && j != thisWood.dataAboutWood.get(1).length() - 1) {
-            String string = String.valueOf(thisWood.dataAboutWood.get(i).charAt(j - 1)) + String.valueOf(thisWood.dataAboutWood.get(i - 1).charAt(j))
-                    + String.valueOf(thisWood.dataAboutWood.get(i).charAt(j + 1)) + "0";
-            return string;
-        }
-        if (i == thisWood.dataAboutWood.size() - 1 && j == thisWood.dataAboutWood.get(1).length() - 1) {
-            String string = String.valueOf(thisWood.dataAboutWood.get(i).charAt(j - 1)) + String.valueOf(thisWood.dataAboutWood.get(i - 1).charAt(j))
-                    + "0" + "0";
-            return string;
-        }
-        if (i == 0 && j < thisWood.dataAboutWood.get(1).length() - 1 && j > 0) {
-            String string = String.valueOf(thisWood.dataAboutWood.get(i).charAt(j - 1)) + "0"
-                    + String.valueOf(thisWood.dataAboutWood.get(i).charAt(j + 1)) + String.valueOf(thisWood.dataAboutWood.get(i + 1).charAt(j));
-            return string;
-        }
-        if (i == 0 && j == 0) {
-            String string = "0" + "0"
-                    + String.valueOf(thisWood.dataAboutWood.get(i).charAt(j + 1)) + String.valueOf(thisWood.dataAboutWood.get(i + 1).charAt(j));
-            return string;
+    private String boundRoundCage(int y, int x) {
+        String result = "";
+        result += (x > 0 && thisWood.dataAboutWood.get(y).charAt(x - 1) == '1') ? '1' : '0';
+        result += (y > 0 && thisWood.dataAboutWood.get(y - 1).charAt(x) == '1') ? '1' : '0';
+        result += (x < thisWood.dataAboutWood.get(y).length() - 1 && thisWood.dataAboutWood.get(y).charAt(x + 1) == '1') ? '1' : '0';
+        result += (y < thisWood.dataAboutWood.size() - 1 && thisWood.dataAboutWood.get(y + 1).charAt(x) == '1') ? '1' : '0';
+//        System.out.println("x = " + x + "; y = " + y + ": " + result);
+        return result;
 
-        }
-        if (i == 0 && j == thisWood.dataAboutWood.get(0).length() - 1) {
-            String string = String.valueOf(thisWood.dataAboutWood.get(i).charAt(j - 1)) + "0"
-                    + "0" + String.valueOf(thisWood.dataAboutWood.get(i + 1).charAt(j));
-            return string;
-        }
-        if (i > 0 && i < thisWood.dataAboutWood.size() - 1 && j == 0) {
-            String string = "0" + String.valueOf(thisWood.dataAboutWood.get(i - 1).charAt(j))
-                    + String.valueOf(thisWood.dataAboutWood.get(i).charAt(j + 1)) + String.valueOf(thisWood.dataAboutWood.get(i + 1).charAt(j));
-            return string;
-
-        }
-        if (i == thisWood.dataAboutWood.size() - 1 && j == 0) {
-            String string = "0" + String.valueOf(thisWood.dataAboutWood.get(i - 1).charAt(j))
-                    + String.valueOf(thisWood.dataAboutWood.get(i).charAt(j + 1)) + "0";
-            return string;
-
-        }
-        if (i > 0 && i < thisWood.dataAboutWood.size() - 1 && j == 0) {
-            String string = "0" + String.valueOf(thisWood.dataAboutWood.get(i - 1).charAt(j))
-                    + String.valueOf(thisWood.dataAboutWood.get(i).charAt(j + 1)) + String.valueOf(thisWood.dataAboutWood.get(i + 1).charAt(j));
-            return string;
-        }
-        if (i > 0 && i < thisWood.dataAboutWood.size() && j == thisWood.dataAboutWood.get(0).length()) {
-            String string = String.valueOf(thisWood.dataAboutWood.get(i).charAt(j - 1)) + String.valueOf(thisWood.dataAboutWood.get(i - 1).charAt(j))
-                    + "0" + String.valueOf(thisWood.dataAboutWood.get(i + 1).charAt(j));
-            return string;
-        }
-
-//        String string = String.valueOf(thisWood.dataAboutWood.get(i).charAt(j - 1)) + String.valueOf(thisWood.dataAboutWood.get(i - 1).charAt(j))
-//                + String.valueOf(thisWood.dataAboutWood.get(i).charAt(j + 1)) + String.valueOf(thisWood.dataAboutWood.get(i + 1).charAt(j));
-//            return string;
-//        }
-//        if (i!=0&&j!=0){
-//        String string = String.valueOf(thisWood.dataAboutWood.get(i).charAt(j - 1)) + String.valueOf(thisWood.dataAboutWood.get(i - 1).charAt(j))
-//                + String.valueOf(thisWood.dataAboutWood.get(i).charAt(j + 1)) + String.valueOf(thisWood.dataAboutWood.get(i + 1).charAt(j));
-//            return string;
-//        }
-//
-//        if (i==0 ){
-//            if(j!=0){
-//            String string = String.valueOf(thisWood.dataAboutWood.get(i).charAt(j - 1)) + "0" + String.valueOf(thisWood.dataAboutWood.get(i).charAt(j + 1))
-//                    + String.valueOf(thisWood.dataAboutWood.get(i + 1).charAt(j));
-//            return string;}
-//            else {
-//                String string = "0" + "0" + String.valueOf(thisWood.dataAboutWood.get(i).charAt(j + 1))
-//                        + String.valueOf(thisWood.dataAboutWood.get(i + 1).charAt(j));
-//                return string;
-//            }
-//
-//        }
-//        if (i==thisWood.dataAboutWood.size()){
-//            String string = String.valueOf(thisWood.dataAboutWood.get(i).charAt(j - 1)) + String.valueOf(thisWood.dataAboutWood.get(i - 1).charAt(j))
-//                    + String.valueOf(thisWood.dataAboutWood.get(i).charAt(j + 1)) + "0";
-//            return string;
-//        }
-//        if (j==0){
-//
-//            String string = "0" + String.valueOf(thisWood.dataAboutWood.get(i - 1).charAt(j)) + String.valueOf(thisWood.dataAboutWood.get(i).charAt(j + 1))
-//                    + String.valueOf(thisWood.dataAboutWood.get(i + 1).charAt(j));
-//            return string;
-//        }
-//        if (j==thisWood.dataAboutWood.get(1).length()){
-//            String string = String.valueOf(thisWood.dataAboutWood.get(i).charAt(j - 1)) + String.valueOf(thisWood.dataAboutWood.get(i - 1).charAt(j))
-//                    + "0" + String.valueOf(thisWood.dataAboutWood.get(i + 1).charAt(j));
-//            return string;
-//        }
-//        if (i==thisWood.dataAboutWood.size()&& j==thisWood.dataAboutWood.get(1).length()){
-//            String string = String.valueOf(thisWood.dataAboutWood.get(i).charAt(j - 1)) + String.valueOf(thisWood.dataAboutWood.get(i - 1).charAt(j))
-//                    + "0" + "0";
-//            return string;
-//        }
-        return "nothing";
     }
 
 

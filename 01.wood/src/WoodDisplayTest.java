@@ -12,7 +12,7 @@ public class WoodDisplayTest extends TestCase {
         FileInputStream fileInputStream = new FileInputStream("input.txt");
         WoodLoaderCreate woodLoaderCreate = new WoodLoaderCreate();
         MyWood wood = (MyWood) woodLoaderCreate.Load(fileInputStream);
-        wood.createWoodman("man", new Point(0, 2));
+        wood.createWoodman("man", new Point(1, 2));
         wood.createWoodman("man1", new Point(1, 1));
         try {
             WoodDisplay display = new WoodDisplay(wood, System.out);

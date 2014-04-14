@@ -56,8 +56,8 @@ public class MyWood implements Wood {
     @Override
     public Action move(String name, Direction direction) throws Exception {
         Point point = null;
-        if (woodmansCatalog.containsKey(name)) {
-            point = woodmansCatalog.get(name).currentPosition;
+        if (this.woodmansCatalog.containsKey(name)) {
+            point = this.woodmansCatalog.get(name).currentPosition;
             switch (direction) {
                 case Up:
                     point = point.MoveUp();
